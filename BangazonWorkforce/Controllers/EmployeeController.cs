@@ -70,11 +70,11 @@ namespace BangazonWorkforce.Controllers
         public async Task<IActionResult> Create()
         {
             List<Department> allDepartments = await GetAllDepartments();
-            EmployeeAddEditViewModel viewModel = new EmployeeAddEditViewModel
+            EmployeeAddEditViewModel viewmodel = new EmployeeAddEditViewModel
             {
                 AllDepartments = allDepartments
             };
-            return View(viewModel);
+            return View(viewmodel);
         }
 
         // POST: Employee/Create
@@ -82,16 +82,16 @@ namespace BangazonWorkforce.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(EmployeeAddEditViewModel viewModel)
+        public async Task<IActionResult> Create(EmployeeAddEditViewModel viewmodel)
         {
             if (!ModelState.IsValid)
             {
                 List<Department> allDepartments = await GetAllDepartments();
-                viewModel.AllDepartments = allDepartments;
-                return View(viewModel);
+                viewmodel.AllDepartments = allDepartments;
+                return View(viewmodel);
             }
 
-            Employee employee = viewModel.Employee;
+            Employee employee = viewmodel.Employee;
 
             using (IDbConnection conn = Connection)
             {
@@ -122,13 +122,13 @@ namespace BangazonWorkforce.Controllers
                 return NotFound();
             }
 
-            EmployeeAddEditViewModel viewModel = new EmployeeAddEditViewModel
+            EmployeeAddEditViewModel viewmodel = new EmployeeAddEditViewModel
             {
                 Employee = employee,
                 AllDepartments = allDepartments
             };
 
-            return View(viewModel);
+            return View(viewmodel);
         }
 
         // POST: Employee/Edit/5
@@ -136,9 +136,9 @@ namespace BangazonWorkforce.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, EmployeeAddEditViewModel viewModel)
+        public async Task<IActionResult> Edit(int id, EmployeeAddEditViewModel viewmodel)
         {
-            if (id != viewModel.Employee.Id)
+            if (id != viewmodel.Employee.Id)
             {
                 return NotFound();
             }
@@ -146,11 +146,11 @@ namespace BangazonWorkforce.Controllers
             if (!ModelState.IsValid)
             {
                 List<Department> allDepartments = await GetAllDepartments();
-                viewModel.AllDepartments = allDepartments;
-                return View(viewModel);
+                viewmodel.AllDepartments = allDepartments;
+                return View(viewmodel);
             }
 
-            Employee employee = viewModel.Employee;
+            Employee employee = viewmodel.Employee;
 
             using (IDbConnection conn = Connection)
             {
@@ -232,5 +232,5 @@ namespace BangazonWorkforce.Controllers
                 return departments.ToList();
             }
         }
- }
+    }
 }
