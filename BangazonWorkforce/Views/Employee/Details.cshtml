@@ -26,7 +26,14 @@
             @Html.DisplayNameFor(model => model.IsSupervisor)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.IsSupervisor)
+            @if (!Model.IsSupervisor)
+            {
+                <span>Yes</span>
+            }
+            else
+            {
+                <span>No</span>
+            }
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.DepartmentId)
