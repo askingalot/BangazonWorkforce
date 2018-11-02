@@ -34,27 +34,25 @@ namespace BangazonWorkforce.IntegrationTests
         public async Task Post_CreateAddsDepartment()
         {
             HttpClient client = _factory.CreateClient();
-
             string url = "/department/create";
-            HttpResponseMessage createGetResponse = await client.GetAsync(url);
-            IHtmlDocument createGetContent = await HtmlHelpers.GetDocumentAsync(createGetResponse);
+            HttpResponseMessage createPageResponse = await client.GetAsync(url);
+            IHtmlDocument createPage = await HtmlHelpers.GetDocumentAsync(createPageResponse);
 
 
             string newDepartmentName = "Dept -" + Guid.NewGuid().ToString();
             string newDepartmentBudget = new Random().Next().ToString();
-            HttpResponseMessage createPostResponse = await client.SendAsync(
-                (IHtmlFormElement)createGetContent.QuerySelector("form[id='create']"),
-                (IHtmlInputElement)createGetContent.QuerySelector("input[type='submit']"),
+            HttpResponseMessage response = await client.SendAsync(
+                createPage,
                 new Dictionary<string, string>
                 {
                     {"Name", newDepartmentName},
                     {"Budget", newDepartmentBudget}
                 });
-            IHtmlDocument indexGetContent = await HtmlHelpers.GetDocumentAsync(createPostResponse);
+            IHtmlDocument indexPage = await HtmlHelpers.GetDocumentAsync(response);
 
 
             Assert.Contains(
-                indexGetContent.QuerySelectorAll("td"), 
+                indexPage.QuerySelectorAll("td"), 
                 td => td.TextContent.Contains(newDepartmentName));
         }
     }

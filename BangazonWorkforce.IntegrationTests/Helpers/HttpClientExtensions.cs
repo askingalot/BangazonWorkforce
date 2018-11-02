@@ -11,6 +11,17 @@ namespace BangazonWorkforce.IntegrationTests.Helpers
     {
         public static Task<HttpResponseMessage> SendAsync(
             this HttpClient client,
+            IHtmlDocument document,
+            IEnumerable<KeyValuePair<string, string>> formValues)
+        {
+            return client.SendAsync(
+                (IHtmlFormElement)document.QuerySelector("form"),
+                (IHtmlInputElement)document.QuerySelector("input[type='submit']"),
+                formValues);
+        }
+
+        public static Task<HttpResponseMessage> SendAsync(
+            this HttpClient client,
             IHtmlFormElement form,
             IHtmlElement submitButton)
         {
