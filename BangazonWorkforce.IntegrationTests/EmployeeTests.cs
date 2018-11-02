@@ -1,10 +1,8 @@
-﻿using AngleSharp.Dom;
-using AngleSharp.Dom.Html;
+﻿using AngleSharp.Dom.Html;
 using BangazonWorkforce.IntegrationTests.Helpers;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
@@ -14,19 +12,18 @@ namespace BangazonWorkforce.IntegrationTests
     public class EmployeeTests :
         IClassFixture<WebApplicationFactory<BangazonWorkforce.Startup>>
     {
-        private readonly WebApplicationFactory<BangazonWorkforce.Startup> _factory;
+        private readonly HttpClient _client;
 
         public EmployeeTests(WebApplicationFactory<BangazonWorkforce.Startup> factory)
         {
-            _factory = factory;
+            _client = factory.CreateClient();
         }
 
         [Fact]
         public async Task Post_CreateAddsEmployee()
         {
-            HttpClient client = _factory.CreateClient();
             string url = "/employee/create";
-            HttpResponseMessage createPageResponse = await client.GetAsync(url);
+            HttpResponseMessage createPageResponse = await _client.GetAsync(url);
             IHtmlDocument createPage = await HtmlHelpers.GetDocumentAsync(createPageResponse);
 
 
@@ -34,7 +31,7 @@ namespace BangazonWorkforce.IntegrationTests
             string newLastName = "LastName - " + Guid.NewGuid().ToString();
             string isSupervisor = "true";
             string departmentId = "3";
-            HttpResponseMessage response = await client.SendAsync(
+            HttpResponseMessage response = await _client.SendAsync(
                 createPage,
                 new Dictionary<string, string>
                 {
