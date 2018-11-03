@@ -18,7 +18,7 @@ namespace BangazonWorkforce.Models
                 }
 
                 return AllDepartments
-                        .Select(d => new SelectListItem(d.Name, d.Id.ToString()))
+                        .Select((d, id) => new SelectListItem(d.Name, id.ToString()))
                         .ToList();
             }
         }
