@@ -25,6 +25,22 @@ namespace BangazonWorkforce.IntegrationTests
         }
 
         [Fact]
+        public async Task Get_IndexReturnsSuccessAndCorrectContentType()
+        {
+            // Arrange
+            string url = "/employee";
+            
+            // Act
+            HttpResponseMessage response = await _client.GetAsync(url);
+
+            // Assert
+            response.EnsureSuccessStatusCode(); // Status Code 200-299
+            Assert.Equal("text/html; charset=utf-8",
+                response.Content.Headers.ContentType.ToString());
+        }
+
+
+        [Fact]
         public async Task Post_CreateAddsEmployee()
         {
             // Arrange
@@ -90,8 +106,10 @@ namespace BangazonWorkforce.IntegrationTests
             HttpResponseMessage editPageResponse = await _client.GetAsync(url);
             IHtmlDocument editPage = await HtmlHelpers.GetDocumentAsync(editPageResponse);
 
-            string firstName = (employee.FirstName + Guid.NewGuid().ToString()).Substring(0, 55);
-            string lastName = (employee.LastName + Guid.NewGuid().ToString()).Substring(0, 55);
+            string firstName = StringHelpers.EnsureMaxLength(
+                employee.FirstName + Guid.NewGuid().ToString(), 55);
+            string lastName = StringHelpers.EnsureMaxLength(
+                employee.LastName + Guid.NewGuid().ToString(), 55);
             string isSupervisor = employee.IsSupervisor ? "false" : "true";
             string departmentId = department.Id.ToString();
             string departmentName = department.Name;

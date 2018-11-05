@@ -42,7 +42,7 @@ namespace BangazonWorkforce.IntegrationTests
             HttpResponseMessage createPageResponse = await _client.GetAsync(url);
             IHtmlDocument createPage = await HtmlHelpers.GetDocumentAsync(createPageResponse);
 
-            string newDepartmentName = "Dept-" + Guid.NewGuid().ToString().Substring(0, 55);
+            string newDepartmentName = StringHelpers.EnsureMaxLength("Dept-" + Guid.NewGuid().ToString(), 55);
             string newDepartmentBudget = new Random().Next().ToString();
 
 
