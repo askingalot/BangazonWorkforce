@@ -39,7 +39,8 @@ namespace BangazonWorkforce.Controllers
                                       d.Id,
                                       d.Name,
                                       d.Budget
-                                 FROM Employee e JOIN Department d on e.DepartmentId = d.Id";
+                                 FROM Employee e JOIN Department d on e.DepartmentId = d.Id
+                             ORDER BY e.Id";
                 IEnumerable<Employee> employees = await conn.QueryAsync<Employee, Department, Employee>(
                     sql,
                     (employee, department) => {
